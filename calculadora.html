@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de SAF</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 56px;
+        }
+        .jumbotron {
+            background-color: #f8f9fa;
+        }
+        .section-title {
+            margin: 2rem 0 1rem;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">SAF Conscientização</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Principal</a></li>
+                <li class="nav-item active"><a class="nav-link" href="calculadora.html">Calculadora de SAF</a></li>
+                <li class="nav-item"><a class="nav-link" href="grafico.html">Gráfico de SAF</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="jumbotron text-center">
+    <div class="container">
+        <h1 class="display-4">Calculadora de SAF</h1>
+        <p class="lead">Calcule as emissões de CO2 evitadas e os benefícios ambientais ao usar SAF em comparação com combustíveis fósseis.</p>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <h1 class="text-center">Calculadora de SAF</h1>
+    <form id="saf-form">
+      <div class="form-group">
+        <label for="materiaPrima">Matéria Prima</label>
+        <select class="form-control" id="materiaPrima" required>
+          <option value="">Selecione...</option>
+          <!-- Opções de matéria-prima serão carregadas dinamicamente -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="rotaProducao">Rota de Produção</label>
+        <select class="form-control" id="rotaProducao" required>
+          <option value="">Selecione...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tipoTransporte">Tipo de Transporte</label>
+        <select class="form-control" id="tipoTransporte" required>
+          <option value="">Selecione...</option>
+          <option value="Dutos">Dutos</option>
+          <option value="Rodoviário">Rodoviário</option>
+          <option value="Marítimo">Marítimo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="distancia">Distância (km)</label>
+        <input type="number" class="form-control" id="distancia" min="0" value="0" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Calcular</button>
+    </form>
+    <div class="mt-5" id="resultado">
+      <!-- Resultados serão exibidos aqui -->
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="script.js"></script>
+
+<footer class="footer text-center">
+    <div class="container">
+        <p>&copy; 2024 SAF Conscientização. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
