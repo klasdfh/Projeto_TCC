@@ -72,7 +72,7 @@ Sebo,HEFA,22.5,73.1%`;
     const rotaProducao = rotaProducaoSelect.value;
     const tipoTransporte = tipoTransporteSelect.value;
     const distancia = parseFloat(distanciaInput.value);
-
+  
     const selectedData = safInfo.find(item => item.materiaPrima === materiaPrima && item.rota === rotaProducao);
 
     if (!selectedData) {
@@ -94,11 +94,11 @@ Sebo,HEFA,22.5,73.1%`;
     const co2EstimadoLitro = (co2Estimado * 34.8) / 1000; // Kg CO2 emitido por L de combustível
     const co2Total = co2EstimadoKg + (co2Transporte / 1000); // transformação de CO2 transporte de g p/ kg
     const reducaoReal = ((reducaoCO2 * co2Total) / co2EstimadoKg);
-    
     const emissaoOriginal = ((co2Estimado * 100) / reducaoCO2);
     const reducaoPercentual = emissaoOriginal - co2Total;
     const emissaoCO2QAV = 3.16; //3,16 kg de CO2 para cada kg de QAV queimado
     const moduloAumento = Math.abs(reducaoCO2);
+    const negativeGrossHandler = ((co2Total * 100) / emissaoCO2QAV)
     
     let resultado = `
       <p><b>Resumo:</b></p>
@@ -116,10 +116,10 @@ Sebo,HEFA,22.5,73.1%`;
 
     if (co2Total > emissaoCO2QAV || reducaoCO2 < 0) {
       if (reducaoCO2 < 0) {
-        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${moduloAumento.toFixed(2)}%</br></br>
+        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br>
         ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
       } else {
-        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${moduloAumento.toFixed(2)}%</br></br>
+        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br>
         ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
       }
       
