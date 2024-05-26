@@ -97,7 +97,7 @@ Sebo,HEFA,22.5,73.1%`;
     
     const emissaoOriginal = ((co2Estimado * 100) / reducaoCO2);
     const reducaoPercentual = emissaoOriginal - co2Total;
-  
+    const emissaoCO2QAV = 3.16; //3,16 kg de CO2 para cada kg de QAV queimado
     const moduloAumento = Math.abs(reducaoCO2);
     
     let resultado = `
@@ -114,7 +114,7 @@ Sebo,HEFA,22.5,73.1%`;
       <p>※ Estimativa de emissão total de CO2 do SAF (incl. transporte): ${co2Total.toFixed(2)}kg</p>
     `;
 
-    if (co2Total > co2EstimadoKg || reducaoCO2 < 0) {
+    if (co2Total > emissaoCO2QAV || reducaoCO2 < 0) {
       if (reducaoCO2 < 0) {
         resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${moduloAumento.toFixed(2)}%</br>
         ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
