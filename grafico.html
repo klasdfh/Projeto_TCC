@@ -49,14 +49,24 @@
 <header class="jumbotron text-center">
     <div class="container">
         <h1 class="display-4">Gráfico de SAF</h1>
-        <p class="lead">Visualize os dados e tendências relacionados à produção e uso de SAF em todo o mundo.</p>
+        <p class="lead">Visualize os dados e tendências relacionados à produção e uso de SAF no Brasil até 2037, ano meta para descarbonização da aviação.</p>
     </div>
 </header>
 
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Previsão de Demanda e Produção de SAF</h1>
+    <p class="text-center mb-4">No primeiro campo, forneça os dados históricos de produção 
+    de Querosene Aeronáutico dos últimos anos em um arquivo .CSV no formato "Year,Demand" 
+    (onde "Year" representa o ano e "Demand" a demanda). No segundo campo, forneça os dados 
+    históricos de produção de SAF dos últimos anos em um arquivo .CSV no formato "Year,Production" 
+    (onde "Year" representa o ano e "Production" a produção). Quanto mais dados forem fornecidos, 
+    melhor, pois isso aumentará a confiança na estimativa da demanda.</br></br>
+
+    O componente irá gerar um gráfico mostrando a linha de tendência da estimativa de produção de 
+    SAF em comparação com a demanda de Querosene Aeronáutico (QAV). Além disso, ele indicará se a 
+    produção de SAF será capaz de suprir a demanda e, em caso afirmativo, quando isso ocorrerá.</p>
     <form id="dataForm">
         <div class="mb-3">
+            
             <label for="historicalFile" class="form-label">Selecione o arquivo de dados históricos:</label>
             <input class="form-control" type="file" id="historicalFile" accept=".csv">
         </div>
