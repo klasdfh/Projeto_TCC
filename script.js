@@ -116,10 +116,10 @@ Sebo,HEFA,22.5,73.1%`;
 
     if (co2Total > emissaoCO2QAV || reducaoCO2 < 0) {
       if (reducaoCO2 < 0) {
-        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br>
+        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br></br>
         ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
       } else {
-        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br>
+        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br></br>
         ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
       }
       
