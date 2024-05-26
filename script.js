@@ -85,45 +85,55 @@ Sebo,HEFA,22.5,73.1%`;
     let co2Transporte = 0;
 
     if (tipoTransporte === 'Rodoviário') {
-      co2Transporte = (distancia * 11.8) / 1000;
+      co2Transporte = (distancia * 944) / 1000; //por Kg transportado por km
     } else if (tipoTransporte === 'Marítimo') {
-      co2Transporte = (distancia * 15) / 1000;
+      co2Transporte = (distancia * 150) / 1000; //por Kg transportado por km
     }
 
-    const co2Total = co2Estimado + co2Transporte;
-    const co2Fossil = 3.16 * 1000; // CO2 emitido por litro de Jet A queimado
-    const co2FossilGrama = 3.16; // CO2 emitido por grama de Jet A queimado
-    const co2EconomizadoPorTonelada = (3.16 - ((3.16 * reducaoCO2) / 100)) - co2Transporte;
-    const helpVar = 100 - ((co2EconomizadoPorTonelada * 100) / 3.16)
-    //const co2EconomizadoPorTonelada = ((helpVar + co2Transporte) * 100) / 3.16
-    //const co2EconomizadoPorTonelada = 3160 - (((3.16 * reducaoCO2) / 100) * 1000);
-    //const reducaoPercentual = 100 - ((100 * co2Total)/co2Fossil);
+    const co2EstimadoKg = (co2Estimado * 43) / 1000; // Kg CO2 emitido por Kg de combustível
+    const co2EstimadoLitro = (co2Estimado * 34.8) / 1000; // Kg CO2 emitido por L de combustível
+    const co2Total = co2EstimadoKg + (co2Transporte / 1000); // transformação de CO2 transporte de g p/ kg
+    const reducaoReal = ((reducaoCO2 * co2Total) / co2EstimadoKg);
+    
     const emissaoOriginal = ((co2Estimado * 100) / reducaoCO2);
     const reducaoPercentual = emissaoOriginal - co2Total;
+  
     const moduloAumento = Math.abs(reducaoCO2);
     
-    let resultado= `
+    let resultado = `
       <p>Resumo:</p>
       <p>Matéria Prima: ${materiaPrima}</p>
       <p>Rota de Produção: ${rotaProducao}</p>
       <p>Tipo de Transporte: ${tipoTransporte}</p>
       <p>Distância (km): ${distancia.toFixed(1)}</p>
-      <p>Estimativa de emissão de CO2 por MJ de Combustível de Aviação: ${co2Estimado.toFixed(2)} g</p>
-      <p>CO2 emitido durante o transporte: ${co2Transporte.toFixed(2)} g</p>
-      <p>Total de CO2 emitido no processo (incl. transporte): ${co2Total.toFixed(2)} g</p>
-          `;
-    
+      <p>Estimativa de emissão de CO2 por MJ de Combustível de Aviação: ${co2Estimado.toFixed(2)}g</p>
+      <p>Emissão de CO2 por kg de Combustível de Aviação: 3.16kg</p>
+      <p>Estimativa de emissão de CO2 por kg do SAF: ${co2EstimadoKg.toFixed(2)}kg</p>
+      <p>Estimativa de emissão de CO2 por litro do SAF: ${co2EstimadoLitro.toFixed(2)}l</p>
+      <p>CO2 emitido durante o transporte: ${co2Transporte.toFixed(2)}g</p>
+      <p>Estimativa de emissão total de CO2 do SAF (incl. transporte): ${co2Total.toFixed(2)}kg</p>
+    `;
 
-    if (co2Total > emissaoOriginal || reducaoCO2 < 0) {
-      resultado += `<p>Percentual de AUMENTO total de CO2-eq em comparação com Combustível de Aviação: ${moduloAumento.toFixed(2)}%</br>O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
+    if (co2Total > co2EstimadoKg || reducaoCO2 < 0) {
+      if (reducaoCO2 < 0) {
+        resultado += `<p>Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${moduloAumento.toFixed(2)}%</br>
+        O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
+      } else {
+        resultado += `<p>Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${moduloAumento.toFixed(2)}%</br>
+        O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
+      }
+      
     } else {
-      resultado += `<p>Percentual total de CO2 por tonelada de Combustível de Aviação: ${co2EconomizadoPorTonelada.toFixed(2)} t de CO2</br></br>
-      Percentual máximo de redução de CO2-eq em comparação com comparação com Combustível de Aviação: ${reducaoCO2.toFixed(2)}%</br></br>
-      Percentual de REDUÇÃO total de CO2-eq obtido: ${helpVar.toFixed(2)}%</br></br>
+      resultado += `
+      <p>
+      
+      Percentual máximo de redução de CO2-eq em comparação com Combustível de Aviação: ${reducaoCO2.toFixed(2)}%</br></br>
+      
+      Percentual de redução real de CO2 obtido: ${reducaoReal.toFixed(2)}%</br></br>
+      
       O combustível em questão, com rota de produção ${rotaProducao}, representa uma melhora em relação aos combustíveis tradicionais. 
-      Isso gera uma redução de ${reducaoPercentual.toFixed(2)} g de CO2 por megajoule de combustível, se comparado com o Jet A, 
-      combustível aeronáutico tradicional.</br></br>Obs.: Levando-se em conta que uma aeronave gera, em média, 3,16 toneladas de CO2
-para cada tonelada de combustível Jet A queimado (fonte: https://applications.icao.int/icec/`;
+      Isso gera uma redução de ${reducaoPercentual.toFixed(2)}g de CO2 por megajoule de combustível, se comparado com o Jet A, 
+      combustível aeronáutico tradicional.</br></br>`;
     }
 
     resultadoDiv.innerHTML = resultado;
