@@ -1,38 +1,65 @@
-# Projeto_TCC
-Repositório destinado ao TCC de Arthur Felipe - Aplicação de sustainable aviation fuels (SAFs) no Brasil
+# Descarbonização do Transporte Aéreo: Uma Visão sobre Combustíveis de Aviação Sustentáveis (SAFs) no Brasil
+## - Trabalho de Conclusão de Curso por Arthur Felipe
+
+Este repositório contém um projeto de pesquisa sobre Sustainable Aviation Fuels (Combustíveis de Aviação Sustentáveis), incluindo um programa em JavaScript para calcular as emissões de CO2 de diferentes tipos de SAF com base em um conjunto de dados CSV e uma página HTML interativa para facilitar o uso do programa.
+
+# Descrição do Projeto
+O objetivo deste projeto é analisar e comparar as emissões de CO2 de diferentes tipos de combustíveis de aviação sustentáveis, utilizando dados de um conjunto de dados CSV que contém informações sobre a matéria-prima, a rota de produção e as estimativas de emissões de CO2 por MJ de combustível de aviação. O programa JavaScript calcula as emissões reais de CO2 com base na distância de transporte e compara com as emissões teóricas para determinar se um determinado SAF representa uma melhora ou piora em relação aos combustíveis fósseis tradicionais.
 
 # Predição de Demanda e Produção de SAF
 
 ## Descrição
 
-Este projeto tem como objetivo prever a demanda futura de querosene de aviação (QAV) e a produção de combustível de aviação sustentável (SAF) no Brasil, com base em dados históricos. O projeto utiliza dados de consumo e produção de anos anteriores para estimar a demanda e a produção até 2037, considerando as metas de redução de emissões de CO₂ estabelecidas pelo governo brasileiro.
+Este módulo tem como objetivo prever a demanda futura de querosene de aviação (QAV) e a produção de combustível de aviação sustentável (SAF) no Brasil, com base em dados históricos. O projeto utiliza dados de consumo e produção de anos anteriores para estimar a demanda e a produção até 2037, considerando as metas de redução de emissões de CO₂ estabelecidas pelo governo brasileiro.
 
-## Funcionalidades
-
-- Leitura de arquivos CSV contendo dados históricos de demanda e produção de QAV e SAF.
-- Previsão da demanda de QAV e produção de SAF para os anos de 2024 a 2037.
-- Verificação das metas de redução de CO₂: 1% até 2027 e 10% até 2037.
-- Geração de gráficos para visualização das previsões.
-- Exibição de resultados em uma tabela e mensagens indicativas se as metas foram ou não atingidas.
-
-## Como usar
 
 ### Pré-requisitos
 
 - Navegador web moderno (Chrome, Firefox, Edge, etc.)
 - Conexão à internet para carregar bibliotecas externas
 
+
+## Como usar -- Calculadora de SAF
+
 ### Passos
 
-1. Clone o repositório:
-    ```sh
-    git clone https://github.com/seu-usuario/seu-repositorio.git
-    cd seu-repositorio
-    ```
+1. Abra o arquivo index.html em seu navegador web para acessar a interface interativa.
+2. Selecione a matéria-prima, a rota de produção, o tipo de transporte e a distância para calcular as emissões de CO2.
+3. Clique em "Calcular".
 
-2. Abra o arquivo `index.html` em seu navegador.
+### Resultados
 
-3. Faça upload dos arquivos CSV contendo os dados históricos:
+- O código verifica se as metas de redução de emissões de CO₂ serão atingidas.
+- Exibe mensagens informando se as metas de 1% até 2027 e de 10% até 2037 serão cumpridas.
+- Gera um gráfico mostrando as previsões de demanda e produção ao longo dos anos.
+
+### Exemplo de Saída
+
+Input - 
+Selecione "Cana de Açúcar" como matéria-prima e "ATJ (Etanol)" como rota de produção.
+Escolha "Rodoviário" como tipo de transporte e insira uma distância de 100 km.
+Clique em "Calcular" para ver os resultados das emissões de CO2.
+
+Output - 
+Resumo:
+※ Matéria Prima: Cana de Açúcar
+※ Rota de Produção: ATJ (Etanol)
+※ Tipo de Transporte: Rodoviário
+※ Distância (km): 100.0
+※ Estimativa de emissão de CO2 por MJ de Combustível de Aviação: 32.80g
+※ Emissão de CO2 por kg de Combustível de Aviação: 3.16kg
+※ Estimativa de emissão de CO2 por kg do SAF: 1.41kg
+※ CO2 emitido durante o transporte: 0.09kg
+※ Estimativa de emissão total de CO2 do SAF (incl. transporte): 1.50kg
+※ Percentual de redução de emissão de CO2-eq real em comparação com Combustível de Aviação: 52.38%
+✅ O combustível em questão, com rota de produção ATJ (Etanol), representa uma melhora em relação aos combustíveis tradicionais. Isso gera uma redução de 40.69g de CO2 por megajoule de combustível, se comparado com o Jet A, combustível aeronáutico tradicional.
+
+## Como usar -- Gráfico de SAF
+
+### Passos
+
+1. Abra o arquivo `grafico.html` em seu navegador.
+2. Faça upload dos arquivos CSV contendo os dados históricos:
     - `dados_historicos.csv`: Contém os dados históricos de demanda de QAV.
     - `producao_saf.csv`: Contém os dados históricos de produção de SAF.
 
@@ -55,27 +82,7 @@ Este projeto tem como objetivo prever a demanda futura de querosene de aviação
     ...
     2023,180
     ```
-
-### Funcionalidades do Código
-
-O código JavaScript do projeto realiza as seguintes tarefas:
-
-1. **Leitura dos arquivos CSV**:
-    Utiliza a biblioteca [PapaParse](https://www.papaparse.com/) para ler os arquivos CSV.
-
-2. **Predição da demanda e produção futuras**:
-    Previsões baseadas em dados históricos e nas metas de redução de CO₂.
-
-3. **Cálculo das emissões de CO₂**:
-    ```latex
-    \[
-    \text{Emissão de CO}_2 \text{ por km} = \frac{2.682 \text{ g de CO}_2}{2.84 \text{ km/l}} = 944 \text{ g de CO}_2 \text{ por km}
-    \]
-    ```
-
-4. **Geração de gráficos**:
-    Utiliza a biblioteca [Chart.js](https://www.chartjs.org/) para gerar gráficos das previsões de demanda e produção.
-
+    
 ### Resultados
 
 - O código verifica se as metas de redução de emissões de CO₂ serão atingidas.
