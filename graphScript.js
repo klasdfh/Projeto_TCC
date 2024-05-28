@@ -45,7 +45,7 @@ function parseCSVFile(file) {
 function predictFutureDemand(historicalData, safData) {
     const futureDemand = [];
     const futureProduction = [];
-    
+
     const startYear = 2024;
     const endYear = 2037;
 
@@ -61,21 +61,26 @@ function predictFutureDemand(historicalData, safData) {
 }
 
 function calculateEstimatedDemand(year, historicalData) {
-    const lastHistoricalYear = 2023;
-    const initialReduction = 0.01; // 1% em 2024
+    const initialReductionYear = 2027;
+    const finalReductionYear = 2037;
+    const initialReduction = 0.01; // 1% em 2027
     const finalReduction = 0.10;  // 10% em 2037
-    const reductionRate = (finalReduction - initialReduction) / (2037 - 2024);
 
-    const reduction = initialReduction + reductionRate * (year - 2024);
-    const latestDemand = historicalData.find(data => data.Year === lastHistoricalYear).Demand;
+    let reduction = 0;
+    if (year >= initialReductionYear) {
+        const reductionRate = (finalReduction - initialReduction) / (finalReductionYear - initialReductionYear);
+        reduction = initialReduction + reductionRate * (year - initialReductionYear);
+    }
+
+    const latestDemand = historicalData[historicalData.length - 1].Demand;
 
     return latestDemand * (1 - reduction);
 }
 
 function calculateEstimatedProduction(year, safData) {
-    const lastProduction = safData.find(data => data.Year === 2023).Production;
+    const lastProduction = safData[safData.length - 1].Production;
     const growthRate = 0.20; // Supondo um crescimento anual de 20%
-    const yearsFromLastData = year - 2023;
+    const yearsFromLastData = year - safData[safData.length - 1].Year;
 
     return lastProduction * Math.pow(1 + growthRate, yearsFromLastData);
 }
@@ -88,6 +93,8 @@ function displayResults(futureData) {
     const futureProduction = futureData.futureProduction;
 
     let intersectionYear = null;
+    let meets1PercentTarget = false;
+    let meets10PercentTarget = false;
 
     const resultTable = document.createElement('table');
     resultTable.className = 'table table-striped';
@@ -105,14 +112,34 @@ function displayResults(futureData) {
         if (!intersectionYear && futureProduction[index].production >= demand.demand) {
             intersectionYear = demand.year;
         }
+
+        if (!meets1PercentTarget && futureProduction[index].production >= demand.demand * 0.99) {
+            meets1PercentTarget = demand.year;
+        }
+
+        if (!meets10PercentTarget && futureProduction[index].production >= demand.demand * 0.90) {
+            meets10PercentTarget = demand.year;
+        }
     });
 
     outputDiv.appendChild(resultTable);
 
     if (intersectionYear) {
-        outputDiv.innerHTML += `<p>✅ A produção de SAF atenderá a demanda no ano ${intersectionYear}.</p>`;
+        outputDiv.innerHTML += `<p>✅ A produção de SAF atenderá a demanda geral no ano ${intersectionYear}.</p>`;
     } else {
         outputDiv.innerHTML += '<p>❌ A produção de SAF não atenderá a demanda até 2037.</p>';
+    }
+
+    if (meets1PercentTarget) {
+        outputDiv.innerHTML += `<p>✅ A produção de SAF atingirá a meta de redução de 1% de CO2 no ano ${meets1PercentTarget}.</p>`;
+    } else {
+        outputDiv.innerHTML += '<p>❌ A produção de SAF não atingirá a meta de redução de 1% de CO2 até 2037.</p>';
+    }
+
+    if (meets10PercentTarget) {
+        outputDiv.innerHTML += `<p>✅ A produção de SAF atingirá a meta de redução de 10% de CO2 no ano ${meets10PercentTarget}.</p>`;
+    } else {
+        outputDiv.innerHTML += '<p>❌ A produção de SAF não atingirá a meta de redução de 10% de CO2 até 2037.</p>';
     }
 }
 
