@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
   //Valores referente a CO2 e glicerina foram estimados com base em seu percentual de melhoria indicados na pesquisa
   const safData = `Matéria Prima,Rota de Conversão,Estimativa de CO2 (g) por MJ de Combustível de Aviação,Potencial de Redução de CO2 em Comparação com Combustíveis Fósseis ao Longo do Ciclo de Vida
 Dióxido de Carbono (CO2),FT,5.3,94%
-Glicerina,FT,15.5,82,.%
+Glicerina,FT,15.5,82.5%
 Beterraba Açucareira,SIP,43.6,47.8%
 Biomassa de Capim-sorgo,ATJ (Etanol),41.2,50.7%
 Biomassa de Capim-sorgo,ATJ (Isobutanol),48.8,41.6%
