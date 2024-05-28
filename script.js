@@ -5,8 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const tipoTransporteSelect = document.getElementById('tipoTransporte');
   const distanciaInput = document.getElementById('distancia');
   const resultadoDiv = document.getElementById('resultado');
-
+  //Dados retirados da tabela de Potencial de redução de CO2 do ciclo de vida do SAF de GRIMME (2023)
+  //Valores referente a CO2 e glicerina foram estimados com base em seu percentual de melhoria indicados na pesquisa
   const safData = `Matéria Prima,Rota de Conversão,Estimativa de CO2 (g) por MJ de Combustível de Aviação,Potencial de Redução de CO2 em Comparação com Combustíveis Fósseis ao Longo do Ciclo de Vida
+Dióxido de Carbono (CO2),FT,5.3,94%
+Glicerina,FT,15.5,82,.%
 Beterraba Açucareira,SIP,43.6,47.8%
 Biomassa de Capim-sorgo,ATJ (Etanol),41.2,50.7%
 Biomassa de Capim-sorgo,ATJ (Isobutanol),48.8,41.6%
@@ -90,15 +93,25 @@ Sebo,HEFA,22.5,73.1%`;
       co2Transporte = (distancia * 150) / 1000; //por Kg transportado por km
     }
 
-    const co2EstimadoKg = (co2Estimado * 43) / 1000; // Kg CO2 emitido por Kg de combustível
+    let co2EstimadoKg = (co2Estimado * 43) / 1000; // Kg CO2 emitido por Kg de combustível
     const co2EstimadoLitro = (co2Estimado * 34.8) / 1000; // Kg CO2 emitido por L de combustível
-    const co2Total = co2EstimadoKg + (co2Transporte / 1000); // transformação de CO2 transporte de g p/ kg
-    const reducaoReal = ((reducaoCO2 * co2Total) / co2EstimadoKg);
+    let co2Total = co2EstimadoKg + (co2Transporte / 1000); // transformação de CO2 transporte de g p/ kg
+    
+    if (co2Total < 1) {
+      co2Total = 1 + co2Total;
+    }
+    if (co2EstimadoKg < 1) {
+      co2EstimadoKg = 1 + (co2EstimadoKg * 2);
+    }
+
+    
+    const reducaoReal = ((co2Total * reducaoCO2) / co2EstimadoKg);
     const emissaoOriginal = ((co2Estimado * 100) / reducaoCO2);
     const reducaoPercentual = emissaoOriginal - co2Total;
-    const emissaoCO2QAV = 3.16; //3,16 kg de CO2 para cada kg de QAV queimado
+    const emissaoCO2QAV = 3.16; // assume-se 3,16 kg de CO2 para cada kg de QAV queimado
     const moduloAumento = Math.abs(reducaoCO2);
-    const negativeGrossHandler = ((co2Total * 100) / emissaoCO2QAV)
+    //const negativeGrossHandler = ((co2Total * 100) / emissaoCO2QAV)
+    const negativeGrossHandler = reducaoReal - 100;
     
     let resultado = `
       <p><b>Resumo:</b></p>
@@ -114,12 +127,12 @@ Sebo,HEFA,22.5,73.1%`;
       <p>※ Estimativa de emissão total de CO2 do SAF (incl. transporte): ${co2Total.toFixed(2)}kg</p>
     `;
 
-    if (co2Total > emissaoCO2QAV || reducaoCO2 < 0) {
+    if (co2Total > emissaoCO2QAV || reducaoCO2 < 0 || reducaoReal > 100) {
       if (reducaoCO2 < 0) {
-        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br></br>
+        resultado += `<p>※ Percentual de aumento total de CO2 em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%<br>
         ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
       } else {
-        resultado += `<p>※ Percentual de aumento total de CO2-eq em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%</br></br>
+        resultado += `<p>※ Percentual de aumento total de CO2 em comparação com Combustível de Aviação: ${negativeGrossHandler.toFixed(2)}%<br>
         ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
       }
       
@@ -127,9 +140,9 @@ Sebo,HEFA,22.5,73.1%`;
       resultado += `
       <p>
       
-      ※ Percentual máximo de redução de CO2-eq em comparação com Combustível de Aviação: ${reducaoCO2.toFixed(2)}%</br></br>
+      ※ Percentual mínimo de emissão de CO2-eq em comparação com Combustível de Aviação: ${reducaoCO2.toFixed(2)}%</br></br>
       
-      ※ Percentual de redução real de CO2 obtido: ${reducaoReal.toFixed(2)}%</br></br>
+      ※ Percentual de  emissão real de CO2 obtido: ${reducaoReal.toFixed(2)}%</br></br>
       
       ✅ O combustível em questão, com rota de produção ${rotaProducao}, representa uma melhora em relação aos combustíveis tradicionais. Isso gera uma redução de ${reducaoPercentual.toFixed(2)}g de CO2 por megajoule de combustível, se comparado com o Jet A, 
       combustível aeronáutico tradicional.</br></br>`;
