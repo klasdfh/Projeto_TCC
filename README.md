@@ -1,16 +1,10 @@
-# Descarbonização do Transporte Aéreo: Uma Visão sobre Combustíveis de Aviação Sustentáveis (SAFs) no Brasil
-## - Trabalho de Conclusão de Curso por Arthur Felipe
+# Descarbonização do Transporte Aéreo: Uma Visão sobre Combustíveis de Aviação Sustentáveis (SAFs)
+## - Trabalho Acadêmico por Arthur Felipe
 
 Este repositório contém um projeto de pesquisa sobre Sustainable Aviation Fuels (Combustíveis de Aviação Sustentáveis), incluindo um programa em JavaScript para calcular as emissões de CO2 de diferentes tipos de SAF com base em um conjunto de dados CSV e uma página HTML interativa para facilitar o uso do programa.
 
 # Descrição do Projeto
 O objetivo deste projeto é analisar e comparar as emissões de CO2 de diferentes tipos de combustíveis de aviação sustentáveis, utilizando dados de um conjunto de dados CSV que contém informações sobre a matéria-prima, a rota de produção e as estimativas de emissões de CO2 por MJ de combustível de aviação. O programa JavaScript calcula as emissões reais de CO2 com base na distância de transporte e compara com as emissões teóricas para determinar se um determinado SAF representa uma melhora ou piora em relação aos combustíveis fósseis tradicionais.
-
-# Predição de Demanda e Produção de SAF
-
-## Descrição
-
-Este módulo tem como objetivo prever a demanda futura de querosene de aviação (QAV) e a produção de combustível de aviação sustentável (SAF) no Brasil, com base em dados históricos. O projeto utiliza dados de consumo e produção de anos anteriores para estimar a demanda e a produção até 2037, considerando as metas de redução de emissões de CO₂ estabelecidas pelo governo brasileiro.
 
 
 ### Pré-requisitos
@@ -53,6 +47,7 @@ Resumo:
 ※ Estimativa de emissão total de CO2 do SAF (incl. transporte): 1.50kg
 ※ Percentual de redução de emissão de CO2-eq real em comparação com Combustível de Aviação: 52.38%
 ✅ O combustível em questão, com rota de produção ATJ (Etanol), representa uma melhora em relação aos combustíveis tradicionais. Isso gera uma redução de 40.69g de CO2 por megajoule de combustível, se comparado com o Jet A, combustível aeronáutico tradicional.
+
 
 ## Como usar -- Gráfico de SAF
 
