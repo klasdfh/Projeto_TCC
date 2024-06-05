@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
+  
+  /* Definição dos metodos que obterão as informações do front */
   const form = document.getElementById('saf-form');
   const materiaPrimaSelect = document.getElementById('materiaPrima');
   const rotaProducaoSelect = document.getElementById('rotaProducao');
@@ -6,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const distanciaInput = document.getElementById('distancia');
   const resultadoDiv = document.getElementById('resultado');
   
+  /* Informações de safData foram retiradas diretamente da tabela de Potencial de redução de CO2 do ciclo de vida do SAF de GRIMME (2023).
+    Referência completa no PDF do trabalho */
   const safData = `Matéria Prima,Rota de Conversão,Estimativa de CO2 (g) por MJ de Combustível de Aviação,Potencial de Redução de CO2 em Comparação com Combustíveis Fósseis ao Longo do Ciclo de Vida
 Dióxido de Carbono (CO2),FT,5.3,94%
 Glicerina,FT,15.5,82%
@@ -39,12 +43,14 @@ Resíduos Florestais,FT,8.3,90.1%
 Resíduos Sólidos Municipais,FT,5.2,93.8%
 Sebo,HEFA,22.5,73.1%`;
 
+  /* Separação das informações de safData de acordo com as linhas (/n) e separadores (,) */
   const safRows = safData.split('\n').slice(1);
   const safInfo = safRows.map(row => {
     const [materiaPrima, rota, co2, reducao] = row.split(',');
     return { materiaPrima, rota, co2: parseFloat(co2), reducao: parseFloat(reducao.replace('%', '')) };
   });
 
+  /* Populando o select de matérias-primas */
   const materiasPrimas = [...new Set(safInfo.map(item => item.materiaPrima))];
   materiasPrimas.forEach(mp => {
     const option = document.createElement('option');
@@ -53,6 +59,8 @@ Sebo,HEFA,22.5,73.1%`;
     materiaPrimaSelect.appendChild(option);
   });
 
+  /* Atualizando o select de rotas de produção baseado na matéria-prima selecionada */
+  /* Este código adiciona um ouvinte de evento que atualiza as opções do select de rotas de produção sempre que a matéria-prima selecionada mudar */
   materiaPrimaSelect.addEventListener('change', function () {
     const selectedMateriaPrima = materiaPrimaSelect.value;
     const rotas = safInfo
@@ -68,6 +76,7 @@ Sebo,HEFA,22.5,73.1%`;
     });
   });
 
+  /* Cálculo e exibição dos resultados ao enviar o formulário */
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     const materiaPrima = materiaPrimaSelect.value;
@@ -83,20 +92,20 @@ Sebo,HEFA,22.5,73.1%`;
     }
 
     const co2Estimado = selectedData.co2;
-    const reducaoCO2 = selectedData.reducao;
     let co2Transporte = 0;
 
+    /* Referências e cálculos utilizados para obter o valor de emissão de cada modal estão detalhados no PDF do trabalho */
     if (tipoTransporte === 'Rodoviário') {
-      co2Transporte = (distancia * 944) / 1000; // g CO2 por km
+      co2Transporte = (distancia * 944) / 1000; // emissão em g de CO2 por km percorrido
     } else if (tipoTransporte === 'Marítimo') {
-      co2Transporte = (distancia * 150) / 1000; // g CO2 por km
+      co2Transporte = (distancia * 150) / 1000; // emissão em g de CO2 por km percorrido
     }
 
     const co2TotalKg = co2Estimado / 1000 * 43; // kg CO2 por kg de combustível
     const co2TotalTransporteKg = co2Transporte / 1000; // kg CO2 pelo transporte
     const co2Total = co2TotalKg + co2TotalTransporteKg;
 
-    const emissaoCO2QAV = 3.16; // kg CO2 por kg de QAV
+    const emissaoCO2QAV = 3.16; // kg de CO2 emitido por cada kg de QAV queimado - referência completa no PDF do trabalho
     const reducaoPercentual = ((emissaoCO2QAV - co2Total) / emissaoCO2QAV) * 100;
     const reductionCo2PerMJ = emissaoCO2QAV * 1000 / 43 - co2Estimado; // g CO2 por MJ de combustível
 
@@ -113,6 +122,7 @@ Sebo,HEFA,22.5,73.1%`;
       <p>※ Estimativa de emissão total de CO2 do SAF (incl. transporte): ${co2Total.toFixed(2)}kg</p>
     `;
 
+    /* Condição avalia se realmente houve uma redução de CO2, indicada por percentuais de redução acima de 0% */ 
     if (reducaoPercentual < 0) {
       resultado += `<p>※ Percentual de aumento total de CO2 em comparação com Combustível de Aviação: ${Math.abs(reducaoPercentual).toFixed(2)}%</br></br>
       ❌ O combustível em questão, com rota de produção ${rotaProducao}, não representa uma melhora em relação aos combustíveis tradicionais.</p>`;
