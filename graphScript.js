@@ -1,6 +1,8 @@
 document.getElementById('dataForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    /* Adiciona um ouvinte de evento ao formulário para capturar o evento de envio (submit) e 
+      e verifica se ambos os arquivos CSV foram fornecidos para dar início ao processamento dos dados */
     const historicalFile = document.getElementById('historicalFile').files[0];
     const safFile = document.getElementById('safFile').files[0];
 
@@ -27,6 +29,8 @@ document.getElementById('dataForm').addEventListener('submit', function(e) {
     });
 });
 
+/* A função parseCSVFile utiliza a biblioteca PapaParse para ler e analisar os arquivos CSV. 
+  Retorna uma Promise que resolve com os dados do CSV analisado */
 function parseCSVFile(file) {
     return new Promise((resolve, reject) => {
         Papa.parse(file, {
@@ -42,6 +46,9 @@ function parseCSVFile(file) {
     });
 }
 
+/* A função predictFutureDemand gera previsões de demanda e produção de SAF para os anos 
+  de 2024 a 2037. Para cada ano, ela calcula a demanda e a produção estimadas, armazenando 
+  esses valores em arrays. Valores estimados com base em uma progressão aritimética simples */
 function predictFutureDemand(historicalData, safData) {
     const futureDemand = [];
     const futureProduction = [];
@@ -60,11 +67,14 @@ function predictFutureDemand(historicalData, safData) {
     return { futureDemand, futureProduction };
 }
 
+/* A função calculateEstimatedDemand calcula a demanda estimada de SAF para um dado ano, 
+  considerando uma redução gradual nas metas de emissão de CO2 entre 2027 e 2037. Valores 
+  estimados com base em uma progressão aritimética simples */
 function calculateEstimatedDemand(year, historicalData) {
     const initialReductionYear = 2027;
     const finalReductionYear = 2037;
-    const initialReduction = 0.01; // 1% em 2027
-    const finalReduction = 0.10;  // 10% em 2037
+    const initialReduction = 0.01; // meta de redução de 1% anual até 2027 (com base nas metas do governo brasileiro)
+    const finalReduction = 0.10;  // meta de redução anual de 10% a partir de 2027 até 2037 (com base nas metas do governo brasileiro)
 
     let reduction = 0;
     if (year >= initialReductionYear) {
@@ -77,14 +87,19 @@ function calculateEstimatedDemand(year, historicalData) {
     return latestDemand * (1 - reduction);
 }
 
+/* A função calculateEstimatedProduction calcula a produção estimada de SAF para um dado ano, assumindo uma taxa 
+  de crescimento anual de 20% */
 function calculateEstimatedProduction(year, safData) {
     const lastProduction = safData[safData.length - 1].Production;
-    const growthRate = 0.20; // Supondo um crescimento anual de 20%
+    const growthRate = 0.20; // suposição do crescimento anual de 20%
     const yearsFromLastData = year - safData[safData.length - 1].Year;
 
     return lastProduction * Math.pow(1 + growthRate, yearsFromLastData);
 }
 
+/* A função displayResults exibe os resultados da previsão de demanda e produção de SAF em uma tabela. Ela 
+  também verifica se a produção atenderá a demanda e se atingirá as metas de redução de CO2 de 1% e 10%, 
+  exibindo as mensagens apropriadas */
 function displayResults(futureData) {
     const outputDiv = document.getElementById('output');
     outputDiv.innerHTML = '';
@@ -143,6 +158,8 @@ function displayResults(futureData) {
     }
 }
 
+/* A função renderChart utiliza a biblioteca Chart.js para renderizar um gráfico de linha que mostra a demanda e 
+  a produção estimadas de SAF ao longo dos anos */
 function renderChart(futureData) {
     const ctx = document.getElementById('safChart').getContext('2d');
 
